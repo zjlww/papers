@@ -1,5 +1,5 @@
 ## Papers
-
+![visualization of the citation network](<banner.png>)
 Connected Papers is a great service, but it is too expensive, and uncustomizable. Here we implement a version with `memgraph`. The code is based on Python asyncio.
 
 The service watches changes in the `notes` folder, which contains markdown files with YAML frontmatters. On file changes, it will try to update information about the paper.
