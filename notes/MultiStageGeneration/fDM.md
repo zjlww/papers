@@ -1,7 +1,7 @@
 ---
 corpus_id: 252816134
 title: "f-DM: A Multi-stage Diffusion Model via Progressive Signal Transformation"
-topics: [diffusion, cascaded generation]
+topics: [diffusion, cascaded generation, image generation]
 stars: 1
 ---
 

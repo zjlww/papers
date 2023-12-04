@@ -2,7 +2,7 @@
 corpus_id: 248811033
 title: "Directed Acyclic Transformer for Non-Autoregressive Machine Translation"
 topics: [machine translation, NAR, NLP]
-stars: 5
+stars: 4
 ---
 
 This seems to be a fairly original idea.

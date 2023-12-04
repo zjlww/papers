@@ -1,5 +1,5 @@
 ---
-corpus_id: N/A
+openreview_id: "m4mwbPjOwb"
 title: "Simple-TTS: End-to-End Text-to-Speech Synthesis with Latent Diffusion"
 topics: [diffusion, TTS, NAR]
 stars: 3
