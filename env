@@ -1,0 +1,1 @@
+MEMGRAPH="--log-level=TRACE --storage-mode=IN_MEMORY_ANALYTICAL"

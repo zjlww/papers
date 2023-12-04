@@ -1,0 +1,130 @@
+// A palette of colors used to color distinct node labels
+Define(COLOR_PALETTE, AsArray(
+  #DD2222, #FB6E00, #FFC500, #720096,
+  #5E4FA2, #3288BD, #66C2A5, #ABDDA4,
+  #E6F598, #FEE08B, #D53E4F, #9E0142
+))
+Define(COLOR_PALETTE_ITER, AsIterator(COLOR_PALETTE))
+
+// If there are no palette colors to use, use random colors instead
+Define(RandomColor, Function(RGB(RandomInt(255), RandomInt(255), RandomInt(255))))
+Define(GetNextColor, Function(
+  Coalesce(Next(COLOR_PALETTE_ITER), RandomColor())
+))
+
+// Cache map to keep a selected color for each node label
+Define(ColorByLabel, AsMap())
+Define(GetColorByLabel, Function(labels, Coalesce(
+  Get(ColorByLabel, labels),
+  Set(ColorByLabel, labels, GetNextColor())
+)))
+Define(JoinLabels, Function(labels, Join(Sort(labels), ":")))
+
+// Overwrite node text with the node label if defined
+@NodeStyle Greater(Size(Labels(node)), 0) {
+  label: Format(":{}", Join(Labels(node), " :"))
+}
+
+// Overwrite node text with the property "name" if defined
+@NodeStyle HasProperty(node, "name") {
+  label: AsText(Property(node, "name"))
+}
+
+// Feel free to uncomment the lines below to set up a custom style for the specific node label
+// @NodeStyle HasLabel(node, "MyCustomLabel") {
+//   color: black
+// }
+
+// Feel free to uncomment the lines below to set up a custom style for the specific node property
+// @NodeStyle HasProperty(node, "my_property_name") {
+//   color: black
+//   label: AsText(Property(node, "my_property_name"))
+// }
+
+// Baseline edge style that will be applied to every single edge
+@EdgeStyle {
+  color: #999999
+  color-hover: #1D1D1D
+  color-selected: #1D1D1D
+  width: 0.5
+  width-hover: 0.9
+  width-selected: 0.9
+  font-size: 0
+}
+
+// Show edge text only if there is a small number of edges in the view
+@EdgeStyle Less(EdgeCount(graph), 30) {
+  label: Type(edge)
+}
+
+// In case of a map view, set the default tile layer
+@ViewStyle.Map {
+  tile-layer: "light"
+}
+
+// Canvas background color
+@ViewStyle {
+  background-color: #FFFFFF00
+}
+
+Define(NodeAlpha, Function(node, Min(AsArray(Log(Add(Div(Property(node, "citationCount"), 50.0), 1.0)), 1.0))))
+
+Define(NodeSize, Function(node, Max(AsArray(Floor(Mul(NodeAlpha(node), 5.0)), 2.0))))
+
+Define(NodeColor, Function(node, 
+  If(Equals(Property(node, "state"), -1), RGB(0, 0, 255), 
+  If(Equals(Property(node, "state"),  0), RGB(0, 255, 0),
+  If(Equals(Property(node, "state"),  1), RGB(255, 255, 0),
+  If(Equals(Property(node, "state"),  2), RGB(255, 0, 0),
+  black
+  ))))
+))
+
+@NodeStyle HasLabel(node, "Paper") {
+  label: Concat(Join(Slice(Split(Property(node, "name"), " "), 0, 4), " "), "...")
+  border-width: 0.5
+  color: NodeColor(node)
+  color-hover: Lighter(NodeColor(node))
+  color-selected: Darker(NodeColor(node))
+  shadow-color: gray
+  shadow-offset-x: 2
+  shadow-offset-y: 2
+  shadow-size: 5
+  size:NodeSize(node)
+  shape: "square"
+  font-color: black
+  font-size:4
+}
+
+
+@NodeStyle HasLabel(node, "Venue") {
+  label: Concat(Join(Slice(Split(Property(node, "name"), " "), 0, 4), " "), "...")
+  border-width: 0.5
+  color: black
+  color-hover: Lighter(black)
+  color-selected: Darker(black)
+  shadow-color: gray
+  shadow-offset-x: 2
+  shadow-offset-y: 2
+  shadow-size: 5
+  size:3
+  shape: "triangle"
+  font-color: black
+  font-size:4
+}
+
+@NodeStyle HasLabel(node, "Author") {
+  label: Property(node, "name")
+  border-width: 0.5
+  color: white
+  color-hover: Lighter(white)
+  color-selected: Darker(white)
+  shadow-color: gray
+  shadow-offset-x: 2
+  shadow-offset-y: 2
+  shadow-size: 5
+  size:3
+  shape: "dot"
+  font-color: black
+  font-size:4
+}
