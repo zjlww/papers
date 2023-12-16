@@ -16,6 +16,7 @@ The service watches changes in the `notes` folder, which contains markdown files
 2. Install Python dependencies `requests`, `neo4j`, `yaml`
 3. Run `python watch.py` to start the service.
 4. Write CYPHER queries and visualize citations in Memgraph Lab. (There is no plan for a custom GUI yet.)
+5. Either manually add note files, or run `python fetch.py <arxivID / corpusID> <optional nick name>`.
 
 ### Database Schema
 
@@ -28,7 +29,7 @@ Node Types:
     - publicationDate: int
     - referenceCount: int
     - citationCount: int
-    - star: int
+    - stars: int
 - URL:
     - name: str
     - url: str
@@ -48,7 +49,6 @@ Relations:
     - rank: int in {0, 1, 2, ...}, 0 for the first author.
 - (Paper)-[:JOINS]->(Venue)
 - (Paper)-[:CITES]->(Paper)
-- (URL)-[:CITES]->(Paper)
 - (Topic)-[:CONTAIN]->(Paper)
 
 

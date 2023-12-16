@@ -67,7 +67,9 @@ Define(JoinLabels, Function(labels, Join(Sort(labels), ":")))
   background-color: #FFFFFF00
 }
 
-Define(NodeAlpha, Function(node, Min(AsArray(Log(Add(Div(Property(node, "citationCount"), 50.0), 1.0)), 1.0))))
+Define(NodeAlpha, Function(node, Min(AsArray(Log(Add(Div(
+  If(HasProperty(node, "citationCount"), Property(node, "citationCount"), 0.0)
+  , 50.0), 1.0)), 1.0))))
 
 Define(NodeSize, Function(node, Max(AsArray(Floor(Mul(NodeAlpha(node), 5.0)), 2.0))))
 
